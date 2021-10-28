@@ -1,0 +1,72 @@
+#include <Adafruit_CircuitPlayground.h>
+#define CAP_THRESHOLD   100
+#define DEBOUNCE        350
+
+uint8_t touchPadAmt = sizeof(pads)/sizeof(uint8_t);
+uint8_t pads[] = {3, 2, 0, 1, 12, 6, 9, 10}; //These are the number of pads that would respond to touch on the Flora board 
+
+void takeAction(uint8_t pad) {
+  Serial.print("PAD "); Serial.print(pad); Serial.print(" says: ");
+  switch (pad) {
+    case 3:
+      Serial.println("Touch Detected");
+      CircuitPlayground.playTone(200, 100, false);
+      break;
+    case 2:
+      Serial.println("Touch Detected");
+      CircuitPlayground.playTone(100, 100, false);
+      break;
+    case 0:
+      Serial.println("Touch Detected");
+      CircuitPlayground.playTone(400, 100, false);
+      break;
+    case 1:
+      Serial.println("Touch Detected.");
+      CircuitPlayground.playTone(350, 100, false);
+      break;
+    case 12:
+      Serial.println("Touch Detected");
+      CircuitPlayground.playTone(300, 100, false);
+      break;
+    case 6:
+      Serial.println("Touch Detected");
+      CircuitPlayground.playTone(250, 100, false);
+      break;
+    case 9:
+      Serial.println("Touch Detected");
+      CircuitPlayground.playTone(200, 100, false);
+      break;
+    case 10:
+      Serial.println("Touch Detected");
+      CircuitPlayground.playTone(150, 100, false);
+      break;
+    default:
+      Serial.println("Touch!");
+      CircuitPlayground.playTone(100, 100, false);
+  }
+}
+
+boolean capButton(uint8_t pad) {
+  if (CircuitPlayground.readCap(pad) > CAP_THRESHOLD) {
+    return true;  
+  } else {
+    return false;
+  }
+}
+
+void setup() {
+  Serial.begin(9600); 
+  CircuitPlayground.begin();
+}
+
+void loop() {
+  for (int i=0; 
+      i<numberOfPads; 
+      i++) {
+    
+    if (capButton(pads[i])) {
+       takeAction(pads[i]);
+       delay(DEBOUNCE*10);
+    }
+  }
+}
